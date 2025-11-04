@@ -142,7 +142,7 @@ If this module solves your problem, great! If you need additional features or lo
 
 ```bash
 # Download the installation script
-wget https://raw.githubusercontent.com/YOUR_USERNAME/luci-snort3/main/install.sh
+wget https://raw.githubusercontent.com/dddavid51/luci-snort3/main/install.sh
 
 # Make it executable
 chmod +x install.sh
