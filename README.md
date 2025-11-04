@@ -284,7 +284,7 @@ Module d'interface web LuCI complet pour Snort3 IDS/IPS sur OpenWrt. Ce module f
 
 ```bash
 # Télécharger le script d'installation
-wget https://raw.githubusercontent.com/YOUR_USERNAME/luci-snort3/main/install.sh
+wget https://raw.githubusercontent.com/dddavid51/luci-snort3/main/install.sh
 
 # Le rendre exécutable
 chmod +x install.sh
