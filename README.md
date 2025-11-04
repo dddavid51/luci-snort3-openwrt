@@ -225,7 +225,7 @@ GPL v2 - Compatible with OpenWrt and LuCI
 
 **David Dzieciol**  
 Email: david.dzieciol51100@gmail.com  
-GitHub: https://github.com/YOUR_USERNAME/luci-snort3
+GitHub: https://github.com/dddavid51/luci-snort3
 
 ### 🙏 Acknowledgments
 
