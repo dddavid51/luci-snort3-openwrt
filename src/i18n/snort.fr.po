@@ -1,0 +1,134 @@
+msgstr "Par défaut"
+
+msgid "Alert"
+msgstr "Alerter"
+
+msgid "Block"
+msgstr "Bloquer"
+
+msgid "Drop"
+msgstr "Rejeter"
+
+msgid "Reject"
+msgstr "Refuser"
+
+msgid "Update rules"
+msgstr "Mettre à jour les règles"
+
+msgid "Update"
+msgstr "Mettre à jour"
+
+msgid "Rules update launched in background."
+msgstr "Mise à jour des règles lancée en arrière-plan."
+
+msgid "Snort - Alerts and Logs"
+msgstr "Snort - Alertes et Logs"
+
+msgid "Recent alerts (50 most recent)"
+msgstr "Dernières alertes (50 plus récentes)"
+
+msgid "Refresh"
+msgstr "Actualiser"
+
+msgid "Snort system logs (20 most recent)"
+msgstr "Logs système Snort (20 plus récents)"
+
+msgid "No logs"
+msgstr "Aucun log"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "View detailed reports via SSH with the command:"
+msgstr "Consultez les rapports détaillés via SSH avec la commande:"
+
+msgid "Log files:"
+msgstr "Fichiers de logs:"
+
+msgid "Controls"
+msgstr "Contrôles"
+
+msgid "Quick actions"
+msgstr "Actions rapides"
+
+msgid "Update status"
+msgstr "Statut mise à jour"
+
+msgid "Click on \"Update\" to start the rules update"
+msgstr "Cliquez sur \"Mettre à jour\" pour lancer la mise à jour des règles"
+
+msgid "Update in progress..."
+msgstr "Mise à jour en cours..."
+
+msgid "Update completed!"
+msgstr "Mise à jour terminée !"
+
+msgid "Active symbolic link"
+msgstr "Lien symbolique actif"
+
+msgid "Create a symbolic link from /var/snort.d/rules to /etc/snort/rules?"
+msgstr "Créer un lien symbolique de /var/snort.d/rules vers /etc/snort/rules ?"
+
+msgid "Symbolic link created successfully!"
+msgstr "Lien symbolique créé avec succès !"
+
+msgid "Error creating symbolic link"
+msgstr "Erreur lors de la création du lien symbolique"
+
+msgid "Directory does not exist: "
+msgstr "Le répertoire n'existe pas : "
+
+msgid "Rules are in"
+msgstr "Les règles sont dans"
+
+msgid "Create symbolic link"
+msgstr "Créer le lien symbolique"
+
+msgid "No rules directory found"
+msgstr "Aucun répertoire de règles trouvé"
+
+msgid "Rule files:"
+msgstr "Fichiers de règles:"
+
+msgid "Fast alerts"
+msgstr "Alertes rapides"
+
+msgid "Detailed JSON alerts"
+msgstr "Alertes JSON détaillées"
+
+msgid "No alerts"
+msgstr "Aucune alerte"
+
+msgid "No alerts recorded"
+msgstr "Aucune alerte enregistrée"
+
+msgid "Update already in progress..."
+msgstr "Mise à jour déjà en cours..."
+
+msgid "Update launched in background. Monitoring starts automatically."
+msgstr "Mise à jour lancée en arrière-plan. Le suivi démarre automatiquement."
+
+msgid "Temporary files cleaned"
+msgstr "Fichiers temporaires nettoyés"
+
+msgid "Old directory backed up. "
+msgstr "Ancien répertoire sauvegardé. "
+
+msgid "In progress..."
+msgstr "En cours..."
+
+msgid "Error"
+msgstr "Erreur"
+
+msgid "Running"
+msgstr "En cours d'exécution"
+
+msgid "Stopped"
+msgstr "Arrêté"
+
+msgid "Snort memory"
+msgstr "Mémoire Snort"
+
+msgid "System memory"
+msgstr "Mémoire système"
+

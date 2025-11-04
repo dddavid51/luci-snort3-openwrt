@@ -1,0 +1,95 @@
+else
+	echo "  ℹ Le répertoire /var/snort.d/rules n'existe pas encore"
+	echo "  Il sera créé lors de la première mise à jour des règles"
+fi
+
+echo ""
+echo "Installation des traductions..."
+cat > /usr/lib/lua/luci/i18n/snort.fr.po << 'EOF_TRANSLATION_FR'
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: fr\n"
+
+msgid "Snort IDS/IPS"
+msgstr "Snort IDS/IPS"
+
+msgid "Snort is an open source intrusion detection and prevention system."
+msgstr "Snort est un système de détection et prévention d'intrusions open source."
+
+msgid "Service Status"
+msgstr "Statut du service"
+
+msgid "State"
+msgstr "État"
+
+msgid "Status"
+msgstr "Statut"
+
+msgid "Alerts"
+msgstr "Alertes"
+
+msgid "Recent Alerts"
+msgstr "Dernières alertes"
+
+msgid "Configuration"
+msgstr "Configuration"
+
+msgid "Enable Snort"
+msgstr "Activer Snort"
+
+msgid "Enable or disable Snort service"
+msgstr "Active ou désactive le service Snort"
+
+msgid "Manual mode"
+msgstr "Mode manuel"
+
+msgid "Use manual configuration (snort.lua)"
+msgstr "Utilise la configuration manuelle (snort.lua)"
+
+msgid "Network interface"
+msgstr "Interface réseau"
+
+msgid "Network interface to monitor (e.g. br-lan, eth0)"
+msgstr "Interface réseau à surveiller (ex: br-lan, eth0)"
+
+msgid "Local network"
+msgstr "Réseau local"
+
+msgid "IP address range to protect"
+msgstr "Plage d'adresses IP à protéger"
+
+msgid "External network"
+msgstr "Réseau externe"
+
+msgid "External IP address range"
+msgstr "Plage d'adresses IP externes"
+
+msgid "Operating mode"
+msgstr "Mode de fonctionnement"
+
+msgid "IDS = Detection only, IPS = Active prevention"
+msgstr "IDS = Détection uniquement, IPS = Prévention active"
+
+msgid "DAQ method"
+msgstr "Méthode DAQ"
+
+msgid "Packet acquisition method"
+msgstr "Méthode d'acquisition des paquets"
+
+msgid "Capture Length"
+msgstr "Taille de capture"
+
+msgid "Maximum packet capture size"
+msgstr "Taille maximale de capture des paquets"
+
+msgid "Logging configuration"
+msgstr "Configuration des logs"
+
+msgid "Enable logging"
+msgstr "Activer les logs"
+
+msgid "Enable event logging"
+msgstr "Active l'enregistrement des événements"
+
+msgid "Log directory"

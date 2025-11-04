@@ -1,0 +1,205 @@
+		var memColor = memPercent > 80 ? 'red' : (memPercent > 60 ? 'orange' : 'green');
+		document.getElementById('sys_mem').innerHTML = 
+			'<span style="color:' + memColor + '">' + 
+			status.mem_used + ' MB / ' + status.mem_total + ' MB (' + memPercent + '%)</span>';
+	}
+);
+//]]></script>
+<div style="background: #f9f9f9; padding: 15px; border-radius: 5px; border: 1px solid #ddd;">
+	<table style="width: 100%;">
+		<tr><td style="width: 30%; font-weight: bold;"><%:Status%>:</td><td id="snort_status"><em><%:Loading...%></em></td></tr>
+		<tr><td style="font-weight: bold;">PID:</td><td id="snort_pid">-</td></tr>
+		<tr><td style="font-weight: bold;"><%:Snort memory%>:</td><td id="snort_mem">-</td></tr>
+		<tr><td style="font-weight: bold;"><%:System memory%>:</td><td id="sys_mem">-</td></tr>
+		<tr><td style="font-weight: bold;"><%:Total alerts%>:</td><td id="snort_alerts">-</td></tr>
+		<tr><td style="font-weight: bold;"><%:Interface%>:</td><td id="snort_interface">-</td></tr>
+		<tr><td style="font-weight: bold;"><%:Mode%>:</td><td id="snort_mode">-</td></tr>
+		<tr><td style="font-weight: bold;"><%:DAQ method%>:</td><td id="snort_method">-</td></tr>
+	</table>
+</div>
+<%+cbi/valuefooter%>
+EOF_STATUS
+
+cat > /usr/lib/lua/luci/view/snort/control.htm << 'EOF_CONTROL'
+<%+cbi/valueheader%>
+<script type="text/javascript">//<![CDATA[
+function snortAction(action) {
+	var btn = document.getElementById('btn_' + action);
+	btn.disabled = true;
+	btn.value = '<%:In progress...%>';
+	XHR.get('<%=url("admin/services/snort/action")%>', { action: action },
+		function(x, result) {
+			if (result.success) {
+				alert(result.message);
+			} else {
+				alert('<%:Error%>: ' + result.message);
+			}
+			btn.disabled = false;
+			btn.value = btn.getAttribute('data-original');
+			location.reload();
+		}
+	);
+}
+//]]></script>
+<div style="padding: 10px 0;">
+	<input type="button" id="btn_start" class="cbi-button cbi-button-apply" value="&#9654; <%:Start%>" 
+		data-original="&#9654; <%:Start%>" onclick="snortAction('start')" style="margin: 5px;" />
+	<input type="button" id="btn_stop" class="cbi-button cbi-button-reset" value="&#9632; <%:Stop%>" 
+		data-original="&#9632; <%:Stop%>" onclick="snortAction('stop')" style="margin: 5px;" />
+	<input type="button" id="btn_restart" class="cbi-button cbi-button-reload" value="&#8635; <%:Restart%>" 
+		data-original="&#8635; <%:Restart%>" onclick="snortAction('restart')" style="margin: 5px;" />
+	<input type="button" id="btn_enable" class="cbi-button cbi-button-save" value="<%:Enable at boot%>" 
+		data-original="<%:Enable at boot%>" onclick="snortAction('enable')" style="margin: 5px;" />
+	<input type="button" id="btn_disable" class="cbi-button cbi-button-remove" value="<%:Disable at boot%>" 
+		data-original="<%:Disable at boot%>" onclick="snortAction('disable')" style="margin: 5px;" />
+</div>
+<%+cbi/valuefooter%>
+EOF_CONTROL
+
+cat > /usr/lib/lua/luci/view/snort/status_page.htm << 'EOF_STATUS_PAGE'
+<%+header%>
+<h2 name="content"><%:Snort IDS/IPS%></h2>
+
+<script type="text/javascript">//<![CDATA[
+XHR.poll(3, '<%=url("admin/services/snort/get_status")%>', null,
+	function(x, status) {
+		if (!status) return;
+		var st = document.getElementById('snort_status');
+		if (st) st.innerHTML = status.running ? '<span style="color:green;font-weight:bold">&#9679; <%:Running%></span>' : '<span style="color:red;font-weight:bold">&#9679; <%:Stopped%></span>';
+		var el = document.getElementById;
+		if (document.getElementById('snort_pid')) document.getElementById('snort_pid').innerHTML = status.pid || 'N/A';
+		if (document.getElementById('snort_mem')) document.getElementById('snort_mem').innerHTML = status.mem_usage;
+		if (document.getElementById('snort_alerts')) document.getElementById('snort_alerts').innerHTML = status.alert_count;
+		if (document.getElementById('snort_interface')) document.getElementById('snort_interface').innerHTML = status.interface;
+		if (document.getElementById('snort_mode')) document.getElementById('snort_mode').innerHTML = status.mode.toUpperCase();
+		if (document.getElementById('snort_method')) document.getElementById('snort_method').innerHTML = status.method.toUpperCase();
+		var p = status.mem_percent;
+		var c = p > 80 ? 'red' : (p > 60 ? 'orange' : 'green');
+		if (document.getElementById('sys_mem')) document.getElementById('sys_mem').innerHTML = '<span style="color:'+c+'">'+status.mem_used+' MB / '+status.mem_total+' MB ('+p+'%)</span>';
+	}
+);
+function snortAction(action) {
+	XHR.get('<%=url("admin/services/snort/action")%>', {action: action}, function(x, result) {
+		if (result && result.success) alert(result.message);
+		else alert('<%:Error%>: ' + (result ? result.message : ''));
+		location.reload();
+	});
+}
+//]]></script>
+
+<fieldset class="cbi-section">
+	<legend><%:Service Status%></legend>
+	<div style="background: #f9f9f9; padding: 15px; border-radius: 5px; border: 1px solid #ddd;">
+		<table style="width: 100%;">
+			<tr><td style="width: 30%; font-weight: bold;"><%:Status%>:</td><td id="snort_status"><em><%:Loading...%></em></td></tr>
+			<tr><td style="font-weight: bold;">PID:</td><td id="snort_pid">-</td></tr>
+			<tr><td style="font-weight: bold;"><%:Snort memory%>:</td><td id="snort_mem">-</td></tr>
+			<tr><td style="font-weight: bold;"><%:System memory%>:</td><td id="sys_mem">-</td></tr>
+			<tr><td style="font-weight: bold;"><%:Total alerts%>:</td><td id="snort_alerts">-</td></tr>
+			<tr><td style="font-weight: bold;"><%:Interface%>:</td><td id="snort_interface">-</td></tr>
+			<tr><td style="font-weight: bold;"><%:Mode%>:</td><td id="snort_mode">-</td></tr>
+			<tr><td style="font-weight: bold;"><%:DAQ method%>:</td><td id="snort_method">-</td></tr>
+		</table>
+	</div>
+</fieldset>
+
+<fieldset class="cbi-section">
+	<legend><%:Controls%></legend>
+	<div style="padding: 10px 0;">
+		<input type="button" class="cbi-button cbi-button-apply" value="&#9654; <%:Start%>" onclick="snortAction('start')" style="margin: 5px;" />
+		<input type="button" class="cbi-button cbi-button-reset" value="&#9632; <%:Stop%>" onclick="snortAction('stop')" style="margin: 5px;" />
+		<input type="button" class="cbi-button cbi-button-reload" value="&#8635; <%:Restart%>" onclick="snortAction('restart')" style="margin: 5px;" />
+		<input type="button" class="cbi-button cbi-button-save" value="<%:Enable at boot%>" onclick="snortAction('enable')" style="margin: 5px;" />
+		<input type="button" class="cbi-button cbi-button-remove" value="<%:Disable at boot%>" onclick="snortAction('disable')" style="margin: 5px;" />
+	</div>
+</fieldset>
+
+<fieldset class="cbi-section">
+	<legend><%:Quick actions%></legend>
+	<div style="padding: 15px;">
+		<a href="<%=url('admin/services/snort/alerts')%>" class="cbi-button cbi-button-apply"><%:See alerts%></a>
+		<a href="<%=url('admin/services/snort')%>" class="cbi-button cbi-button-neutral"><%:Full configuration%></a>
+	</div>
+</fieldset>
+
+<%+footer%>
+EOF_STATUS_PAGE
+
+cat > /usr/lib/lua/luci/view/snort/alerts.htm << 'EOF_ALERTS'
+<%+header%>
+<h2 name="content"><%:Snort - Alerts and Logs%></h2>
+<style>
+.alert-box {
+	background: #f8f9fa;
+	border-left: 4px solid #dc3545;
+	padding: 15px;
+	margin: 15px 0;
+	border-radius: 4px;
+	font-family: monospace;
+	font-size: 0.9em;
+	max-height: 500px;
+	overflow-y: auto;
+}
+.log-box {
+	background: #f0f0f0;
+	border-left: 4px solid #007bff;
+	padding: 15px;
+	margin: 15px 0;
+	border-radius: 4px;
+	font-family: monospace;
+	font-size: 0.9em;
+	max-height: 400px;
+	overflow-y: auto;
+}
+.alert-line, .log-line {
+	padding: 5px 0;
+	border-bottom: 1px solid #e0e0e0;
+	word-wrap: break-word;
+}
+.alert-line:last-child, .log-line:last-child {
+	border-bottom: none;
+}
+</style>
+<fieldset class="cbi-section">
+	<legend><%:Recent alerts (50 most recent)%></legend>
+	<div class="alert-box">
+		<% 
+		local alerts = alerts or translate("No alerts recorded")
+		for line in alerts:gmatch("[^\n]+") do 
+		%>
+			<div class="alert-line"><%=pcdata(line)%></div>
+		<% end %>
+	</div>
+	<div style="text-align: right; margin-top: 10px;">
+		<input type="button" class="cbi-button cbi-button-reload" value="<%:Refresh%>" onclick="location.reload()" />
+	</div>
+</fieldset>
+<fieldset class="cbi-section">
+	<legend><%:Snort system logs (20 most recent)%></legend>
+	<div class="log-box">
+		<% 
+		local logs = logs or translate("No logs")
+		for line in logs:gmatch("[^\n]+") do 
+		%>
+			<div class="log-line"><%=pcdata(line)%></div>
+		<% end %>
+	</div>
+</fieldset>
+<fieldset class="cbi-section">
+	<legend><%:Actions%></legend>
+	<div style="padding: 10px;">
+		<p><%:View detailed reports via SSH with the command:%></p>
+		<pre style="background: #f0f0f0; padding: 10px; border-radius: 4px;">snort-mgr report -v (requires coreutils-sort package)</pre>
+		<p style="margin-top: 15px;"><%:Log files:%></p>
+		<ul>
+			<li><code>/var/log/alert_fast.txt</code> - <%:Fast alerts%></li>
+			<li><code>/var/log/*alert_json.txt</code> - <%:Detailed JSON alerts%></li>
+		</ul>
+	</div>
+</fieldset>
+<%+footer%>
+EOF_ALERTS
+
+cat > /usr/lib/lua/luci/view/snort/recent_alerts.htm << 'EOF_RECENT'
+<%+cbi/valueheader%>
+<style>

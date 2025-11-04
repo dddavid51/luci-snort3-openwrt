@@ -1,0 +1,105 @@
+	padding: 15px;
+	margin: 10px 0;
+	border-radius: 5px;
+	font-family: monospace;
+	font-size: 0.85em;
+	max-height: 300px;
+	overflow-y: auto;
+}
+.alert-item {
+	padding: 8px;
+	margin: 5px 0;
+	background: white;
+	border-left: 3px solid #dc3545;
+	border-radius: 3px;
+}
+.alert-item:hover {
+	background: #f5f5f5;
+}
+.alert-message {
+	color: #d32f2f;
+	font-weight: bold;
+	margin: 5px 0;
+}
+.no-alerts {
+	text-align: center;
+	color: #4caf50;
+	padding: 20px;
+	font-weight: bold;
+}
+.alert-count {
+	background: #dc3545;
+	color: white;
+	padding: 2px 8px;
+	border-radius: 10px;
+	font-size: 0.9em;
+	margin-left: 10px;
+}
+</style>
+<script type="text/javascript">//<![CDATA[
+function updateRecentAlerts() {
+	XHR.get('<%=url("admin/services/snort/get_status")%>', null,
+		function(x, status) {
+			var alertCount = document.getElementById('alert_count_badge');
+			if (alertCount) {
+				alertCount.innerHTML = status.alert_count || '0';
+			}
+		}
+	);
+}
+XHR.poll(5, null, null, updateRecentAlerts);
+updateRecentAlerts();
+//]]></script>
+<div style="margin: 10px 0;">
+	<strong><%:Detected alerts%>: <span id="alert_count_badge" class="alert-count">0</span></strong>
+	<a href="/cgi-bin/luci/admin/services/snort/alerts" class="cbi-button cbi-button-apply" style="float: right; margin-left: 10px; color: white;">
+		<%:View all alerts%>
+	</a>
+</div>
+<div class="recent-alerts-box">
+<%
+	local sys = require "luci.sys"
+	local alerts = sys.exec("[ -f /var/log/alert_fast.txt ] && tail -10 /var/log/alert_fast.txt | tac || echo ''")
+	
+	local line_count = 0
+	for line in string.gmatch(alerts, "[^\r\n]+") do
+		if line ~= "" then
+			line_count = line_count + 1
+		end
+	end
+	
+	if line_count == 0 then
+%>
+		<div class="no-alerts">&#10003; <%:No recent alerts - Your network is secure%></div>
+<%
+	else
+		local displayed = 0
+		for line in string.gmatch(alerts, "[^\r\n]+") do
+			if line ~= "" and displayed < 10 then
+				displayed = displayed + 1
+%>
+				<div class="alert-item">
+					<div class="alert-message">&#128680; <%=pcdata(line)%></div>
+				</div>
+<%
+			end
+		end
+	end
+%>
+</div>
+<div style="text-align: right; margin-top: 5px; font-size: 0.9em; color: #666;">
+	<%:Auto-refresh every 5 seconds%>
+</div>
+<%+cbi/valuefooter%>
+EOF_RECENT
+
+echo ""
+echo "Vérification et création du lien symbolique pour les règles..."
+if [ -d /var/snort.d/rules ]; then
+	if [ -d /etc/snort/rules ] && [ ! -L /etc/snort/rules ]; then
+		echo "  Sauvegarde de l'ancien répertoire..."
+		mv /etc/snort/rules /etc/snort/rules.backup
+	elif [ -L /etc/snort/rules ]; then
+		echo "  Suppression de l'ancien lien..."
+		rm /etc/snort/rules
+	fi

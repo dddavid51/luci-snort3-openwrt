@@ -1,0 +1,81 @@
+	local rule_count = util.trim(sys.exec("find /etc/snort/rules -name '*.rules' 2>/dev/null | wc -l"))
+	if tonumber(rule_count) > 0 then
+		status = status .. '<br><span style="color:#666">' .. translate("Rule files:") .. ' ' .. rule_count .. '</span>'
+	end
+	return status
+end
+
+rules_script = s:option(DummyValue, "_rules_script")
+rules_script.rawhtml = true
+function rules_script.cfgvalue()
+	return [[<script type="text/javascript">
+	function fixRulesSymlink() {
+		if (confirm(']] .. translate("Create a symbolic link from /var/snort.d/rules to /etc/snort/rules?") .. [[')) {
+			XHR.get(']] .. luci.dispatcher.build_url("admin/services/snort/fix_rules") .. [[', null,
+				function(x, result) {
+					if (result && result.success) {
+						alert(']] .. translate("Symbolic link created successfully!") .. [[');
+						location.reload();
+					} else {
+						alert(']] .. translate("Error creating symbolic link") .. [[');
+					}
+				}
+			);
+		}
+	}
+	</script>]]
+end
+
+o = s:option(Value, "oinkcode", translate("Oinkcode"),
+	translate("Access code to download official Snort rules (optional)"))
+o.password = true
+o.placeholder = translate("Enter your Oinkcode if you have one")
+
+o = s:option(ListValue, "action", translate("Rule action"),
+	translate("Default action for rules"))
+o:value("default", translate("Default"))
+o:value("alert", translate("Alert"))
+o:value("block", translate("Block"))
+o:value("drop", translate("Drop"))
+o:value("reject", translate("Reject"))
+o.default = "default"
+
+btn = s:option(Button, "_update_rules", translate("Update rules"))
+btn.inputtitle = translate("Update")
+btn.inputstyle = "apply"
+function btn.write(self, section)
+    -- Lancer la mise à jour en arrière-plan
+    luci.sys.call("(/usr/bin/snort-rules > /tmp/snort_rules_update.log 2>&1; " ..
+                  "rm -f /var/snort.d/*.tar.gz /tmp/snort*.tar.gz 2>/dev/null; " ..
+                  "rm -f /var/snort.d/rules/*.tar.gz 2>/dev/null; " ..
+                  "echo 'FINISHED' >> /tmp/snort_rules_update.log) &")
+    
+    -- Créer le fichier lock
+    luci.sys.call("touch /tmp/snort_rules_update.lock")
+    
+    -- Réparer le lien symbolique si nécessaire
+    check_and_fix_rules_symlink()
+    
+    -- Message de confirmation
+    luci.http.redirect(luci.dispatcher.build_url("admin/services/snort"))
+end
+
+return m
+EOF_CBI
+
+echo "Installation des vues..."
+cat > /usr/lib/lua/luci/view/snort/status.htm << 'EOF_STATUS'
+<%+cbi/valueheader%>
+<script type="text/javascript">//<![CDATA[
+XHR.poll(3, '<%=url("admin/services/snort/get_status")%>', null,
+	function(x, status) {
+		var statusDiv = document.getElementById('snort_status');
+		if (status.running) {
+			statusDiv.innerHTML = '<span style="color:green; font-weight:bold">&#9679; <%:Running%></span>';
+		} else {
+			statusDiv.innerHTML = '<span style="color:red; font-weight:bold">&#9679; <%:Stopped%></span>';
+		}
+		document.getElementById('snort_pid').innerHTML = status.pid || 'N/A';
+		document.getElementById('snort_mem').innerHTML = status.mem_usage;
+		document.getElementById('snort_alerts').innerHTML = status.alert_count;
+		document.getElementById('snort_interface').innerHTML = status.interface;
