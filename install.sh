@@ -6,7 +6,7 @@
 # See /LICENSE for more information.
 #
 # Automatic complete installation of LuCI module for Snort3
-# Download and execute: wget https://raw.githubusercontent.com/YOUR_USERNAME/luci-snort3/main/install.sh && sh install.sh
+# Download and execute: wget https://raw.githubusercontent.com/dddavid51/luci-snort3/main/install.sh && sh install.sh
 # VERSION 3.6 - Complete translations and error corrections
 
 set -e
@@ -40,7 +40,7 @@ if ! command -v snort >/dev/null 2>&1; then
 fi
 
 # Get Snort version
-SNORT_VERSION=$(snort -V 2>&1 | grep -oP 'Version \K[0-9.]+' | head -1 || echo "Unknown")
+SNORT_VERSION=$(snort -V 2>&1 | awk '/Version/ {for(i=1;i<=NF;i++) if($i~/[0-9]+\.[0-9]+/) {print $i; exit}}' || echo "Unknown")
 echo "${BLUE}Detected Snort version: ${SNORT_VERSION}${NC}"
 
 # Get OpenWrt version
