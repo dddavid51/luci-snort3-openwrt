@@ -39,7 +39,7 @@ if ! command -v snort >/dev/null 2>&1; then
     exit 1
 fi
 
-# Get Snort version
+# Get Snort version (busybox compatible)
 SNORT_VERSION=$(snort -V 2>&1 | awk '/Version/ {for(i=1;i<=NF;i++) if($i~/[0-9]+\.[0-9]+/) {print $i; exit}}' || echo "Unknown")
 echo "${BLUE}Detected Snort version: ${SNORT_VERSION}${NC}"
 

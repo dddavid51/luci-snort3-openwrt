@@ -33,7 +33,7 @@ check() {
 }
 
 warn() {
-    echo "${YELLOW} ${NC} $1"
+    echo "${YELLOW}⚠${NC} $1"
     WARNINGS=$((WARNINGS + 1))
 }
 
@@ -261,7 +261,7 @@ if [ $ERRORS -eq 0 ] && [ $WARNINGS -eq 0 ]; then
     echo "  Services → Snort IDS/IPS"
     EXIT_CODE=0
 elif [ $ERRORS -eq 0 ]; then
-    echo "${YELLOW} Installation complete with $WARNINGS warning(s)${NC}"
+    echo "${YELLOW}⚠ Installation complete with $WARNINGS warning(s)${NC}"
     echo ""
     echo "The module should work, but review warnings above."
     EXIT_CODE=0

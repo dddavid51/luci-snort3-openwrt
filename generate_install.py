@@ -323,7 +323,7 @@ if [ "$VERIFICATION_OK" = true ] && [ "$ERRORS" -eq 0 ]; then
     echo "${GREEN}✓ Installation successful! Enjoy Snort3 on LuCI!${NC}"
     exit 0
 else
-    echo "${YELLOW} Installation completed with warnings${NC}"
+    echo "${YELLOW}⚠ Installation completed with warnings${NC}"
     echo "Please review the log file: $LOG_FILE"
     exit 1
 fi

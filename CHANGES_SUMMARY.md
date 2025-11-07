@@ -81,7 +81,7 @@ BLUE='\033[0;34m'     # For information
 
 **Version Detection:**
 ```bash
-SNORT_VERSION=$(snort -V 2>&1 | awk '/Version/ {for(i=1;i<=NF;i++) if($i~/[0-9]+\.[0-9]+/) {print $i; exit}}' || echo "Unknown")
+SNORT_VERSION=$(snort -V 2>&1 | grep -oP 'Version \K[0-9.]+' | head -1)
 OPENWRT_VERSION=$(cat /etc/openwrt_release | grep DISTRIB_RELEASE | cut -d"'" -f2)
 ```
 
