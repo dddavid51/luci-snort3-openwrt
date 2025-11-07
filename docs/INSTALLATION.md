@@ -41,14 +41,14 @@
 ### Method 1: One-line Installation
 
 ```bash
-wget -O - https://raw.githubusercontent.com/YOUR_USERNAME/luci-snort3/main/install.sh | sh
+wget -O - https://raw.githubusercontent.com/dddavid51/luci-snort3/main/install.sh | sh
 ```
 
 ### Method 2: Download and Execute
 
 ```bash
 # Download the script
-wget https://raw.githubusercontent.com/YOUR_USERNAME/luci-snort3/main/install.sh
+wget https://raw.githubusercontent.com/dddavid51/luci-snort3/main/install.sh
 
 # Make it executable
 chmod +x install.sh
@@ -60,7 +60,7 @@ chmod +x install.sh
 ### Method 3: Using curl
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/luci-snort3/main/install.sh | sh
+curl -sSL https://raw.githubusercontent.com/dddavid51/luci-snort3/main/install.sh | sh
 ```
 
 ---
