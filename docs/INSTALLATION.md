@@ -84,7 +84,7 @@ Clone the repository:
 
 ```bash
 cd /tmp
-git clone https://github.com/YOUR_USERNAME/luci-snort3.git
+git clone https://github.com/dddavid51/luci-snort3.git
 cd luci-snort3
 ```
 
