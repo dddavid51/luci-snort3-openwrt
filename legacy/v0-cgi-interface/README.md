@@ -47,7 +47,7 @@ cp snort-interface-openwrt.sh /www/cgi-bin/snort.sh
 chmod +x /www/cgi-bin/snort.sh
 
 # Access via browser
-http://your-router-ip/cgi-bin/snort.sh
+http://192.168.1.1/cgi-bin/snort.sh
 ```
 
 ## ⚠️ Limitations
