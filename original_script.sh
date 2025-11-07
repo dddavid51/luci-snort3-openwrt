@@ -1,7 +1,6 @@
 #!/bin/sh
 # Installation automatique complète du module LuCI pour Snort3
 # Téléchargez ce script et exécutez-le : sh install_luci_snort.sh
-# VERSION CORRIGÉE v36 - Corrections complètes des traductions et erreurs
 
 set -e
 
