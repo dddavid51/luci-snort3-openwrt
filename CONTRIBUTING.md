@@ -162,11 +162,11 @@ Any other relevant information
 
 ```bash
 # Clone your fork
-git clone https://github.com/YOUR_USERNAME/luci-snort3.git
+git clone https://github.com/dddavid51/luci-snort3.git
 cd luci-snort3
 
 # Add upstream remote
-git remote add upstream https://github.com/ORIGINAL_OWNER/luci-snort3.git
+git remote add upstream https://github.com/dddavid51/luci-snort3.git
 
 # Create development branch
 git checkout -b dev/my-feature
